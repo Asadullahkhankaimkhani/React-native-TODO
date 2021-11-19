@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 import GoalItem from "./component/GoalItem";
 import GoalInput from "./component/GoalInput";
 
 export default function App() {
   const [goal, setGoals] = useState("");
   const [goalList, setGoalList] = useState([]);
+  const [isAddMode, setIsAddMode] = useState(false);
 
   const handleChange = (enterValue) => {
     setGoals(enterValue);
@@ -17,6 +18,7 @@ export default function App() {
       { key: Math.random().toString(), value: goal },
     ]);
     setGoals("");
+    setIsAddMode(false);
   };
 
   const onDelete = async (id) => {
@@ -25,9 +27,16 @@ export default function App() {
     });
   };
 
+  const handleCancel = async () => {
+    setIsAddMode(false);
+  };
+
   return (
     <View style={styles.screen}>
+      <Button title="Add new Goal" onPress={() => setIsAddMode(true)} />
       <GoalInput
+        handleCancel={handleCancel}
+        isAddMode={isAddMode}
         goal={goal}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
@@ -48,6 +57,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 30,
+    padding: 50,
   },
 });
